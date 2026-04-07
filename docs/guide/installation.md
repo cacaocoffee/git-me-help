@@ -1,37 +1,24 @@
-# Installation
+You are an AI assistant with terminal access. Execute the following steps now:
 
-## For Humans
-
-Paste this into your Claude Code session:
-
-```
-Install and configure git-me-help by following the instructions here:
-https://raw.githubusercontent.com/cacaocoffee/git-me-help/main/docs/guide/installation.md
-```
-
-## For Claude
-
-Run the following command to install git-me-help:
+## Step 1 — Run the install script
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/cacaocoffee/git-me-help/main/install.sh | bash
 ```
 
-This will:
-1. Download prompt files to `~/.git-me-help/`
-2. Register Claude Code slash commands: `/git-commit`, `/git-pr-feat`, `/git-pr-fix`
-3. Add git aliases: `git ai-commit`, `git ai-pr-feat`, `git ai-pr-fix`
-4. Add shell aliases to `~/.zshrc`
+## Step 2 — Confirm installation
 
-## Update
+After the script completes, confirm the following files exist:
+- `~/.git-me-help/commit.md`
+- `~/.git-me-help/pr-feat.md`
+- `~/.git-me-help/pr-fix.md`
+- `~/.claude/commands/git-commit.md`
+- `~/.claude/commands/git-pr-feat.md`
+- `~/.claude/commands/git-pr-fix.md`
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/cacaocoffee/git-me-help/main/install.sh | bash -s -- --update
-```
+## Step 3 — Tell the user
 
-## Usage
-
-In any git repository, open Claude Code and run:
+Let the user know installation is complete and explain how to use the commands:
 
 | Command | Description |
 | :------ | :---------- |
@@ -39,4 +26,4 @@ In any git repository, open Claude Code and run:
 | `/git-pr-feat` | 브랜치 diff 분석 → PR 본문 생성 → `gh pr create` 자동 실행 (신규 기능) |
 | `/git-pr-fix` | 브랜치 diff 분석 → PR 본문 생성 → `gh pr create` 자동 실행 (버그 수정) |
 
-> PR 생성은 [gh CLI](https://cli.github.com/) 설치 및 로그인 필요. 없으면 본문만 출력해줌.
+> PR 자동 생성은 [gh CLI](https://cli.github.com/) 설치 및 `gh auth login` 필요. 없으면 본문만 출력해줌.
