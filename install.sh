@@ -90,6 +90,32 @@ ALIASES
   info "반영하려면: source ${shell_rc}"
 }
 
+setup_gh() {
+  header "🐙 GitHub CLI (gh) 설정 중..."
+  if ! command -v gh >/dev/null 2>&1; then
+    if command -v brew >/dev/null 2>&1; then
+      info "gh CLI 설치 중 (Homebrew)..."
+      brew install gh
+      success "gh CLI 설치 완료"
+    else
+      warn "gh CLI 없음. Homebrew도 없어 자동 설치 불가. 수동 설치: https://cli.github.com"
+      return
+    fi
+  else
+    success "gh CLI 이미 설치됨"
+  fi
+
+  if gh auth status >/dev/null 2>&1; then
+    local user
+    user=$(gh api user --jq '.login' 2>/dev/null || echo "알 수 없음")
+    success "gh 이미 로그인됨: ${user}"
+  else
+    info "GitHub 로그인이 필요합니다. 브라우저가 열립니다..."
+    gh auth login --git-protocol ssh --hostname github.com --web
+    success "gh 로그인 완료"
+  fi
+}
+
 setup_git_aliases() {
   header "🔗 Git Alias 등록 중..."
   git config --global alias.ai-commit  '!claude "$(cat ~/.git-me-help/commit.md)"'
@@ -138,6 +164,7 @@ main() {
   command -v claude >/dev/null 2>&1 && setup_claude  || warn "Claude Code 없음. 스킵."
   command -v gemini >/dev/null 2>&1 && setup_gemini  || warn "Gemini CLI 없음. 스킵."
   command -v codex  >/dev/null 2>&1 && setup_codex   || warn "Codex CLI 없음. 스킵."
+  setup_gh
   setup_aliases
   setup_git_aliases
 
